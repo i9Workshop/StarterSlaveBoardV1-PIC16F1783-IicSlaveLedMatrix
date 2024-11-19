@@ -37,7 +37,7 @@ void programInitialize(void) {
     TRISCbits.TRISC4 = 1;
     APFCONbits.SDISEL = 0;
     
-    i2c_Initialize(0x10);
+    i2c_Initialize(0x10); // Change address to 0x20 for second device
 }
 
 void programLoop(void) {
