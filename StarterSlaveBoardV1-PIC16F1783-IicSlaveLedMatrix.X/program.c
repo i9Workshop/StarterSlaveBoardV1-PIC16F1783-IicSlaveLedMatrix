@@ -44,9 +44,9 @@ void programLoop(void) {
     ledMatrix_SetDisplay(i2c_RxData); // Display led matrix from  variable i2c_RxData
 }
 
-void ledMatrix_DelayScanInput(uint16_t delay) {
+void ledMatrix_DelayPollInput(uint16_t delay) {
     for(uint16_t i=0; i<delay; i++) {
-        i2c_ScanMaster(); // Call I2C polling function
+        i2c_PollMaster(); // Call I2C polling function
         
         i2c_TxData = (uint8_t)((pb_No1 << 5) | (pb_No2 << 4) | (sw_No1 << 3) | // Write switches status to variable i2c_TxData
                      (sw_No2 << 2) | (sw_No3 << 1) | sw_No4);
@@ -76,7 +76,7 @@ void ledMatrix_SetDisplay(uint16_t ledWord) {
     led_GndRow2 = 1;
     led_GndRow3 = 1;
     
-    ledMatrix_DelayScanInput(delay);
+    ledMatrix_DelayPollInput(delay);
     
     // Second row
     
@@ -89,7 +89,7 @@ void ledMatrix_SetDisplay(uint16_t ledWord) {
     led_GndRow2 = 0;
     led_GndRow3 = 1;
     
-    ledMatrix_DelayScanInput(delay);
+    ledMatrix_DelayPollInput(delay);
     
     // Third row
     
@@ -102,7 +102,7 @@ void ledMatrix_SetDisplay(uint16_t ledWord) {
     led_GndRow2 = 1;
     led_GndRow3 = 0;
     
-    ledMatrix_DelayScanInput(delay);
+    ledMatrix_DelayPollInput(delay);
 }
 
 void i2c_Initialize(uint8_t address) {
@@ -120,7 +120,7 @@ void i2c_Initialize(uint8_t address) {
                      // Tioz = 2us
 }
 
-void i2c_ScanMaster(void) {
+void i2c_PollMaster(void) {
     // Single byte data receiver - Page 272
     // Single byte data transmit - Page 277
     if(PIR1bits.SSP1IF) { // Polling for MSSP module interrupt - Page 266
